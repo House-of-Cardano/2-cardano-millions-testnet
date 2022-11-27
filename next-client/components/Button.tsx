@@ -1,9 +1,9 @@
 import React from "react";
 
 interface classStyles {
-  classStyles: string;
-  btnName: string;
-  handleClick: any;
+  classStyles?: string;
+  btnName?: string;
+  handleClick?: any;
 };
 
 const Button = ({classStyles, btnName, handleClick}:classStyles) => {

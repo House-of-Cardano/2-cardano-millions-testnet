@@ -36,7 +36,7 @@ const MenuItems = ({ isMobile, active, setActive }: LinkAttributes) => {
         isMobile && "flex-col h-full"
       }`}
     >
-      {["Explore NFTs", "Listed NFTs", "My NFTS"].map((item, index) => (
+      {["Explore NFTs", "Listed NFTs", "My NFTs"].map((item, index) => (
         <li
           key={index}
           onClick={() => {
