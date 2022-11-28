@@ -11,9 +11,38 @@ import images from "../assets";
 import { makeId } from "../utils/makeId";
 
 const Home = () => {
+  const [hideButtons, setHideButtons] = useState(true);
   const { theme } = useTheme();
   const parentRef = useRef(null);
   const scrollRef = useRef(null);
+
+  const handleScroll = (direction: string) => {
+    const { current }: { current: any } = scrollRef;
+    const scrollAmount = window.innerWidth > 1000 ? 2700 : 210;
+    if (direction === "left") {
+      current.scrollLeft -= scrollAmount;
+    } else {
+      current.scrollLeft += scrollAmount;
+    }
+  };
+
+  const isScrollable = () => {
+    const { current }: { current: any } = scrollRef;
+    const { current: parent }: { current: any } = parentRef;
+    if (current?.scrollAmount >= parent?.offsetWidth) {
+      setHideButtons(true);
+    } else {
+      setHideButtons(false);
+    }
+  };
+
+  useEffect(() => {
+    isScrollable();
+    window.addEventListener("resize", isScrollable);
+    return () => {
+      window.removeEventListener("resize", isScrollable);
+    };
+  }, []);
 
   // To prevent hydration error messages from the makeId() function -> returning a random number means
   // that the server side rendered DOM is not the same as the DOM made by the react app in the browser https://stackoverflow.com/questions/72673362/error-text-content-does-not-match-server-rendered-html
@@ -25,18 +54,7 @@ const Home = () => {
     // Returns null on first render, so the client and server match
     return null;
   }
-
-  const handleScroll = (direction: string) => {
-    const { current } = scrollRef;
-
-    const scrollAmount = window.innerWidth > 1000 ? 2700 : 210;
-
-    if(direction === "left") {
-      current.scrollLeft -= scrollAmount;
-    } else {
-      current.scrollLeft += scrollAmount;
-    }
-  }
+  // -------------------------------------------------------------------------------------------------
 
   return (
     <div className="flex justify-center sm:px-4 p-12">
@@ -64,32 +82,34 @@ const Home = () => {
                   creatorADA={10 - index * 0.5}
                 />
               ))}
-              <>
-                <div
-                  className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer left-0"
-                  onClick={() => handleScroll("left")}
-                >
-                  <Image
-                    src={images.left}
-                    alt={""}
-                    layout="fill"
-                    objectFit="contain"
-                    className={theme === "light" && "filter invert"}
-                  />
-                </div>
-                <div
-                  className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer right-0"
-                  onClick={() => handleScroll("right")}
-                >
-                  <Image
-                    src={images.right}
-                    alt={""}
-                    layout="fill"
-                    objectFit="contain"
-                    className={theme === "light" && "filter invert"}
-                  />
-                </div>
-              </>
+              {!hideButtons && (
+                <>
+                  <div
+                    className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer left-0"
+                    onClick={() => handleScroll("left")}
+                  >
+                    <Image
+                      src={images.left}
+                      alt={""}
+                      layout="fill"
+                      objectFit="contain"
+                      className={theme === "light" && "filter invert"}
+                    />
+                  </div>
+                  <div
+                    className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer right-0"
+                    onClick={() => handleScroll("right")}
+                  >
+                    <Image
+                      src={images.right}
+                      alt={""}
+                      layout="fill"
+                      objectFit="contain"
+                      className={theme === "light" && "filter invert"}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
