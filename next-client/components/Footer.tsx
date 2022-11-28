@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/legacy/image";
 import { useTheme } from "next-themes";
 
+import logo from "../assets/HoC_MASTER_v1_splitFour.svg"
 import images from "../assets";
 import { Button } from "./";
 
@@ -36,7 +37,7 @@ const Footer = () => {
         <div className="flexStart flex-1 flex-col">
           <div className="flexCenter cursor-pointer">
             <Image
-              src={images.logo02}
+              src={logo}
               objectFit="contain"
               width={32}
               height={32}

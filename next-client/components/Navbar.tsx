@@ -6,8 +6,8 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 
 import images from "../assets";
+import logo from "../assets/HoC_MASTER_v1_splitFour.svg"
 import { Button } from "./";
-import { Writable } from "stream";
 
 interface LinkAttributes {
   isMobile?: any;
@@ -92,7 +92,7 @@ const Navbar = () => {
             onClick={() => {}}
           >
             <Image
-              src={images.logo02}
+              src={logo}
               objectFit="contain"
               width={32}
               height={32}
