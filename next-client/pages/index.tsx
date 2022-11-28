@@ -1,6 +1,8 @@
+import Head from "next/head";
+
 import { useState, useEffect, useRef } from "react";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useTheme } from "next-themes";
 
 import { Banner, CreatorCard } from "../components";
@@ -13,17 +15,28 @@ const Home = () => {
   const parentRef = useRef(null);
   const scrollRef = useRef(null);
 
-  // const handleScroll = (direction: string) => {
-  //   const { current } = scrollRef;
+  // To prevent hydration error messages from the makeId() function -> returning a random number means
+  // that the server side rendered DOM is not the same as the DOM made by the react app in the browser https://stackoverflow.com/questions/72673362/error-text-content-does-not-match-server-rendered-html
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+  if (!hydrated) {
+    // Returns null on first render, so the client and server match
+    return null;
+  }
 
-  //   const scrollAmount = window.innerWidth > 1000 ? 2700 : 210;
+  const handleScroll = (direction: string) => {
+    const { current } = scrollRef;
 
-  //   if(direction === "left") {
-  //     current.scrollLeft -= scrollAmount;
-  //   } else {
-  //     current.scrollLeft += scrollAmount;
-  //   }
-  // }
+    const scrollAmount = window.innerWidth > 1000 ? 2700 : 210;
+
+    if(direction === "left") {
+      current.scrollLeft -= scrollAmount;
+    } else {
+      current.scrollLeft += scrollAmount;
+    }
+  }
 
   return (
     <div className="flex justify-center sm:px-4 p-12">
@@ -42,7 +55,7 @@ const Home = () => {
               className="flex flex-roiw w-max overflow-x-scroll no-scrollbar select-none"
               ref={scrollRef}
             >
-              {/* {[6, 7, 8, 9, 10].map((index) => (
+              {[6, 7, 8, 9, 10].map((index) => (
                 <CreatorCard
                   key={`creator-${index}`}
                   rank={index}
@@ -50,9 +63,12 @@ const Home = () => {
                   creatorName={`0x${makeId(3)}...${makeId(4)}`}
                   creatorADA={10 - index * 0.5}
                 />
-              ))} */}
-              {/* <>
-                <div className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer left-0" onClick={() => {}}>
+              ))}
+              <>
+                <div
+                  className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer left-0"
+                  onClick={() => handleScroll("left")}
+                >
                   <Image
                     src={images.left}
                     alt={""}
@@ -61,7 +77,10 @@ const Home = () => {
                     className={theme === "light" && "filter invert"}
                   />
                 </div>
-                <div className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer right-0" onClick={() => {}}>
+                <div
+                  className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 cursor-pointer right-0"
+                  onClick={() => handleScroll("right")}
+                >
                   <Image
                     src={images.right}
                     alt={""}
@@ -70,7 +89,7 @@ const Home = () => {
                     className={theme === "light" && "filter invert"}
                   />
                 </div>
-              </> */}
+              </>
             </div>
           </div>
         </div>
