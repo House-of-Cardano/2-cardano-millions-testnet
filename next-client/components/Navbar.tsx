@@ -6,7 +6,7 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 
 import images from "../assets";
-import logo from "../assets/HoC_MASTER_v1_splitFour.svg"
+import logo from "../assets/HoC_MASTER_v1_splitFour.svg";
 import { Button } from "./";
 
 interface LinkAttributes {
@@ -106,7 +106,7 @@ const Navbar = () => {
         <Link href="/">
           <div className="hidden md:flex" onClick={() => {}}>
             <Image
-              src={images.logo02}
+              src={logo}
               objectFit="contain"
               width={32}
               height={32}
